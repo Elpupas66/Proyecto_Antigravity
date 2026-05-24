@@ -1,0 +1,157 @@
+Perfecto 👍 tu laboratorio de IA está creado correctamente.
+La estructura que aparece en tu terminal confirma que todo se generó bien.
+
+Tu carpeta ahora es:
+
+Proyecto_antigravity
+│
+├─ .claude
+│   └─ agents
+│
+├─ automatizaciones
+├─ docs
+├─ experimentos
+├─ proyectos-clientes
+├─ scraping
+├─ scripts
+├─ trading
+│
+└─ Laboratorio de IA_explacion carpetas.txt
+
+Eso significa que tu laboratorio ya está listo para trabajar con:
+
+Antigravity
+Visual Studio Code
+Ollama
+Claude Code
+🔧 Siguiente paso (muy importante)
+
+Ahora vamos a hacer dos cosas clave para que tu laboratorio funcione de verdad.
+
+1️⃣ Crear configuración de Claude
+2️⃣ Crear agentes especializados
+
+Esto es lo que hará que Claude se comporte como distintos expertos.
+
+1️⃣ Crear configuración .claude/settings.json
+
+Dentro de:
+
+Proyecto_antigravity/.claude
+
+crea un archivo llamado:
+
+settings.json
+
+Contenido:
+
+{
+  "language": "es",
+  "context": "Laboratorio personal de IA con Antigravity, VS Code y Ollama.",
+  "rules": [
+    "responder siempre en español",
+    "explicar antes de modificar archivos importantes",
+    "priorizar soluciones simples"
+  ]
+}
+
+Este archivo hace que Claude:
+
+entienda el contexto del laboratorio
+responda en español
+sea más cuidadoso con el código.
+2️⃣ Crear los agentes IA
+
+Dentro de:
+
+.claude/agents
+
+vamos a crear tres archivos.
+
+trading-analyst.md
+.claude/agents/trading-analyst.md
+
+Contenido:
+
+# Trading Analyst
+
+Especialista en:
+
+- trading algorítmico
+- Pine Script
+- backtesting
+- análisis técnico
+- estrategias cuantitativas
+
+Prioridades:
+
+- claridad en las estrategias
+- gestión de riesgo
+- explicaciones paso a paso
+automation-builder.md
+.claude/agents/automation-builder.md
+
+Contenido:
+
+# Automation Builder
+
+Especialista en:
+
+- automatización de procesos
+- Make
+- n8n
+- APIs
+- integración de servicios
+
+Prioridad: simplificar procesos repetitivos.
+code-auditor.md
+.claude/agents/code-auditor.md
+
+Contenido:
+
+# Code Auditor
+
+Especialista en:
+
+- revisión de código
+- optimización
+- detección de errores
+- refactorización
+
+Objetivo: mejorar calidad y eficiencia del código.
+3️⃣ Tu laboratorio ahora tendrá IA especializada
+
+Claude podrá trabajar como:
+
+trading analyst
+automation builder
+code auditor
+
+dependiendo de lo que estés haciendo.
+
+🚀 Siguiente paso (muy interesante)
+
+En el siguiente paso vamos a hacer algo que mejora mucho tu laboratorio:
+
+activar modelos más potentes en tu portátil
+
+Ahora puedes usar:
+
+qwen3.5:4b
+gemma4:e2b
+gemma4:e4b
+
+pero con tu máquina podemos correr modelos:
+
+7B
+8B
+13B
+14B cuantizados
+
+sin quedarte sin RAM.
+
+Te enseñaré:
+
+cómo configurarlo
+qué modelos instalar
+cuáles van mejor en tu portátil.

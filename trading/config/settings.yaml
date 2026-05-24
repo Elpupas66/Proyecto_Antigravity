@@ -1,0 +1,25 @@
+project_name: "laboratorio_trading"
+
+default_asset: "EURUSD"
+default_timeframe: "4H"
+
+initial_balance: 10000
+risk_per_trade: 0.01
+commission_per_trade: 0.0
+spread: 0.0
+
+data_source: "csv"
+
+paths:
+  raw_data: "trading/data/raw"
+  processed_data: "trading/data/processed"
+  raw_results: "trading/results/raw"
+  summaries: "trading/results/summaries"
+  comparisons: "trading/results/comparisons"
+
+strategy:
+  name: "bvortex_base"
+  atr_period: 14
+  bvortex_threshold_long: -17
+  bvortex_threshold_short: 17
+  use_trend_filter: true

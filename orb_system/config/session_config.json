@@ -1,0 +1,8 @@
+{
+  "active_sessions": ["LDN"],
+  "gmt_offset": 2,
+  "LDN": {"open_gmt": "08:00", "close_gmt": "12:00"},
+  "NY":  {"open_gmt": "13:30", "close_gmt": "20:00"},
+  "ASIA": {"open_gmt": "00:00", "close_gmt": "06:00"},
+  "allowed_days": ["Mon","Tue","Wed","Thu","Fri"]
+}

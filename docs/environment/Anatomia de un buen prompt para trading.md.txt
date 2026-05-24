@@ -1,0 +1,21 @@
+Anatomía de un buen prompt para trading
+
+Un buen prompt = un buen EA. La calidad de tu instrucción determina la calidad del código.
+
+CONTEXTO
+"Eres un programador experto en MQL5 para MT5"
+
+INSTRUMENTO
+Par de forex, timeframe, tipo de operativa
+
+ENTRADA
+Condiciones exactas para compra y venta
+
+RIESGO
+Stop Loss, Take Profit, tamaño de lote
+
+SALIDA
+Condiciones especiales de cierre
+
+FILTROS
+Horarios, días, spread máximo, etc.

@@ -1,0 +1,186 @@
+//@version=6
+indicator("BVortex Original (Gatekeeper Integration)", shorttitle="BVO", format=format.price, precision=2)
+
+// ─────────────────────────────────────────────
+// INPUTS
+// ─────────────────────────────────────────────
+scaler        = input.float(50.0,  title="Multiplier",     minval=1.0)
+extreme_level = input.float(17.0,  title="Extreme Level (abs)", minval=1.0)
+rr_ratio      = input.float(1.0,   title="TP Risk:Reward Ratio", minval=0.1, step=0.1)
+show_armed_bg = input.bool(false,  title="Show Armed State Background")
+
+// ─────────────────────────────────────────────
+// OSCILADOR BVORTEX
+// ─────────────────────────────────────────────
+fast_ma     = ta.ema(close, 6)
+slow_ma     = ta.ema(close, 13)
+macd_line   = fast_ma - slow_ma
+signal_line = ta.ema(macd_line, 5)
+raw_hist    = macd_line - signal_line
+
+atr_val = ta.sma(ta.tr(true), 50)
+// Protección: evitar división por valor menor que el tick mínimo
+hist = (raw_hist / math.max(atr_val, syminfo.mintick)) * scaler
+
+hist_color = hist >= 0 ? color.blue : color.gray
+plot(hist, style=plot.style_histogram, color=hist_color, linewidth=2, title="BVortex")
+hline(0,               "Zero Line",        color=color.white, linestyle=hline.style_dotted)
+hline(-extreme_level,  "Extreme Low",      color=color.red,   linestyle=hline.style_dotted)
+hline(extreme_level,   "Extreme High",     color=color.green, linestyle=hline.style_dotted)
+
+// ─────────────────────────────────────────────
+// CONDICIONES DE VELA
+// NOTA: Evaluadas en barstate.isconfirmed para evitar repainting en tiempo real.
+// Las alertas DEBEN configurarse como "Once Per Bar Close".
+// ─────────────────────────────────────────────
+confirmed   = barstate.isconfirmed
+green_candle = close > open
+red_candle   = close < open
+
+// ─────────────────────────────────────────────
+// ESTADO DEL SISTEMA (variables persistentes)
+// ─────────────────────────────────────────────
+var bool  armed_buy    = false
+var bool  armed_sell   = false
+var float pullback_low  = na
+var float pullback_high = na
+
+var float pending_buy_price  = na
+var float pending_buy_sl     = na
+var float pending_buy_tp     = na
+
+var float pending_sell_price = na
+var float pending_sell_sl    = na
+var float pending_sell_tp    = na
+
+// ─────────────────────────────────────────────
+// ARMADO: El histograma toca el extremo
+// ─────────────────────────────────────────────
+if hist <= -extreme_level
+    armed_buy  := true
+    pullback_low := na(pullback_low) ? low : math.min(pullback_low, low)
+
+if hist >= extreme_level
+    armed_sell  := true
+    pullback_high := na(pullback_high) ? high : math.max(pullback_high, high)
+
+// Limpieza de ciclo: si cruza la línea cero, el pullback se invalida
+if hist >= 0
+    armed_buy := false
+    pullback_low := na
+if hist <= 0
+    armed_sell := false
+    pullback_high := na
+
+// Continuar actualizando pullback mientras el estado esté armado
+if armed_buy and not na(pullback_low)
+    pullback_low := math.min(pullback_low, low)
+
+if armed_sell and not na(pullback_high)
+    pullback_high := math.max(pullback_high, high)
+
+// ─────────────────────────────────────────────
+// TRIGGERS: Giro del histograma + vela a favor
+// CORRECCIÓN: El giro real es hist > hist[1] (histograma subiendo desde zona negativa).
+// Se elimina el OR con hist > 0 para evitar falsos positivos en zona positiva prolongada.
+// Las señales se validan solo en barra confirmada (barstate.isconfirmed).
+// ─────────────────────────────────────────────
+buy_trigger  = confirmed and armed_buy  and (hist > hist[1]) and green_candle
+sell_trigger = confirmed and armed_sell and (hist < hist[1]) and red_candle
+
+// ─────────────────────────────────────────────
+// GESTIÓN DE ORDEN PENDIENTE — BUY
+// ─────────────────────────────────────────────
+if buy_trigger
+    pending_buy_price := high
+    pending_buy_sl    := pullback_low
+    // TP 1:1 RR (configurable). Distancia SL aplicada al alza desde el precio de entrada.
+    pending_buy_tp    := pending_buy_price + (pending_buy_price - pending_buy_sl) * rr_ratio
+
+    armed_buy    := false
+    pullback_low := na
+
+    // Anular orden sell contraria si existía
+    pending_sell_price := na
+    pending_sell_sl    := na
+    pending_sell_tp    := na
+
+// ─────────────────────────────────────────────
+// GESTIÓN DE ORDEN PENDIENTE — SELL
+// ─────────────────────────────────────────────
+if sell_trigger
+    pending_sell_price := low
+    pending_sell_sl    := pullback_high
+    // TP 1:1 RR (configurable). Distancia SL aplicada a la baja desde el precio de entrada.
+    pending_sell_tp    := pending_sell_price - (pending_sell_sl - pending_sell_price) * rr_ratio
+
+    armed_sell    := false
+    pullback_high := na
+
+    // Anular orden buy contraria si existía
+    pending_buy_price := na
+    pending_buy_sl    := na
+    pending_buy_tp    := na
+
+// ─────────────────────────────────────────────
+// ANULACIÓN: Vela contraria en la barra siguiente al gatillo
+// Se verifica que no sea la misma barra del trigger para no anular de inmediato.
+// ─────────────────────────────────────────────
+if not na(pending_buy_price) and red_candle and not buy_trigger
+    pending_buy_price := na
+    pending_buy_sl    := na
+    pending_buy_tp    := na
+
+if not na(pending_sell_price) and green_candle and not sell_trigger
+    pending_sell_price := na
+    pending_sell_sl    := na
+    pending_sell_tp    := na
+
+// ─────────────────────────────────────────────
+// EJECUCIÓN SIMULADA (limpieza visual al superar el nivel de entrada)
+// ADVERTENCIA: En mercado real con gaps, la ejecución puede ser a precio distinto.
+// ─────────────────────────────────────────────
+buy_executed  = not na(pending_buy_price)  and high > pending_buy_price  and not buy_trigger
+sell_executed = not na(pending_sell_price) and low  < pending_sell_price and not sell_trigger
+
+if buy_executed
+    pending_buy_price := na
+    pending_buy_sl    := na
+    pending_buy_tp    := na
+
+if sell_executed
+    pending_sell_price := na
+    pending_sell_sl    := na
+    pending_sell_tp    := na
+
+// ─────────────────────────────────────────────
+// VISUALIZACIÓN DE SEÑALES
+// ─────────────────────────────────────────────
+plotshape(buy_trigger,  title="Buy Trigger",  location=location.belowbar, color=color.blue, style=shape.diamond, size=size.small)
+plotshape(sell_trigger, title="Sell Trigger", location=location.abovebar, color=color.gray, style=shape.diamond, size=size.small)
+
+// Debug visual opcional: fondo cuando el sistema está armado
+bgcolor(show_armed_bg and armed_buy  ? color.new(color.blue,  90) : na, title="Armed Buy BG")
+bgcolor(show_armed_bg and armed_sell ? color.new(color.gray,  90) : na, title="Armed Sell BG")
+
+// ─────────────────────────────────────────────
+// PLOTS OCULTOS PARA INYECCIÓN EN ALERTAS JSON
+// (display=display.none: no visibles en gráfico, accesibles vía {{plot("nombre")}})
+// ─────────────────────────────────────────────
+plot(pending_buy_price,  title="BuyPrice",  display=display.none)
+plot(pending_buy_sl,     title="BuySL",     display=display.none)
+plot(pending_buy_tp,     title="BuyTP",     display=display.none)
+plot(pending_sell_price, title="SellPrice", display=display.none)
+plot(pending_sell_sl,    title="SellSL",    display=display.none)
+plot(pending_sell_tp,    title="SellTP",    display=display.none)
+
+// ─────────────────────────────────────────────
+// ALERTAS JSON — Estructura para n8n → gatekeeper_api.py
+// IMPORTANTE: Configurar alerta como "Once Per Bar Close" para evitar repainting.
+// El campo "volume" puede sobreescribirse en n8n con un nodo Edit Fields.
+// ─────────────────────────────────────────────
+string msg_buy  = '{"action":"COMPRAR","symbol":"{{ticker}}","volume":0.01,"order_type":"STOP","price":{{plot("BuyPrice")}},"sl":{{plot("BuySL")}},"tp":{{plot("BuyTP")}},"justification":"BVortex Original"}'
+string msg_sell = '{"action":"VENDER","symbol":"{{ticker}}","volume":0.01,"order_type":"STOP","price":{{plot("SellPrice")}},"sl":{{plot("SellSL")}},"tp":{{plot("SellTP")}},"justification":"BVortex Original"}'
+
+alertcondition(buy_trigger,  title="BVortex Buy Trigger",  message=msg_buy)
+alertcondition(sell_trigger, title="BVortex Sell Trigger", message=msg_sell)

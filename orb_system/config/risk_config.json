@@ -1,0 +1,10 @@
+{
+  "use_risk_pct": false,
+  "fixed_lot": 0.01,
+  "risk_pct": 1.0,
+  "max_daily_loss_pct": 3.0,
+  "max_trades_per_day": 2,
+  "max_pairs_per_day": 2,
+  "max_concurrent": 4,
+  "kill_switch_active": true
+}

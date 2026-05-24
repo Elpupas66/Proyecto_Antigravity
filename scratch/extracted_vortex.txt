@@ -1,0 +1,184 @@
+--- Page 1 ---
+BIENVENIDOS 
+        VORTEX
+
+--- Page 2 ---
+CLASE 
+VEREMOS AL DETALLE LA ESTRATEGIA VORTEX
+
+--- Page 3 ---
+UN indicador + ESTRUCTURA deL precio
+
+
+--- Page 4 ---
+Usamos marcos temporales
+SWING desde 4H a D1
+(diario) e Incluso W
+(Semanal). Podemos operar
+cualquier activo.
+Se compone de un
+histograma o barras que
+detectan cuando podria
+estar finalizando un
+retroceso.
+Lo hacemos simple y
+confirmamos las
+oportunidades de
+compra o venta con la
+acción del precio y
+siguiendo la
+estructura.
+estrategia VORTEX 
+¿QUÉ ES LA ESTRATEGIA VORTEX?
+
+--- Page 5 ---
+Tener la habilidad para
+subirnos a una tendencia
+con el fin de llevar una
+operativa en corto y largo
+plazo con las "ovejas
+negras".
+Ofrecerte una metodología
+sencilla que te permita
+encontrar oportunidades de
+compra y venta con un alto
+% de aciertos.
+Leer y dominar los
+activos. Nos permitirá
+intrepretar cuando se
+esta acabando un
+pullback.
+estrategia VORTEX 
+¿CUAL ES EL OBJETIVO DE LA ESTRATEGIA?
+
+--- Page 6 ---
+Primero veremos los 4 pasos a seguir de la estrategia.
+Después veremos la metodología a aplicar en diferentes marcos temporales.
+El objetivo de la estrategia es sacar el máximo rendimiento al mercado sin exponerse a él.
+estrategia VORTEX 
+CON SOLO 4 PASOS
+DETECTAMOS UNA
+OPORTUNIDAD
+
+--- Page 7 ---
+estrategia VORTEX 
+¿CÓMO FUNCIONA?
+•GRÁFICO BASE: 1D (DIARIO) Y 4H
+•PRIMER PASO: ANALIZAR TENDENCIA EN 1D 
+•SEGUNDO PASO: ESPERAR PULLBACK (RETROCESO)
+•TERCER PASO: QUE VORTEX LLEGUE AL EXTREMO
+•CUARTO PASO: CONFIRMAR ENTRADA CON GATILLO
+VORTEX Y PATRÓN EN V
+
+--- Page 8 ---
+GRÁFICOS BASE        1d Y 4H
+Aqui analizamos la tendencia
+Aqui buscamos el Gatillo de
+entrada
+
+--- Page 9 ---
+primer paso 
+ANALIZAR TENDENCIA
+AC
+AC
+AC
+BC
+BC
+AC
+BC
+BC
+AC
+BD
+BD
+BD
+AD
+AD
+AD
+AD = ALTO DECRECIENTE
+BD = BAJO DECRECIENTE
+AC = ALTO CRECIENTE
+BC = BAJO CRECIENTE
+
+--- Page 10 ---
+AC
+AC
+AC
+BC
+ANALIZAR TENDENCIA
+BUSCAMOS EN QUE DIRECCION VAN LOS MAXIMOY MINIMOS
+BC
+AC
+BC
+BC
+
+--- Page 11 ---
+AD AB
+AC
+BC
+ANALIZAR TENDENCIA
+A VECES LA TENDENCIA NO ES TAN CLARA COMOEN EL GRAFICO ANTERIOR PERO NOS APOYAMOSEN LA ESTRUCTURA MAS RECIENTE
+BD
+BD
+BC
+BC
+AC
+BD
+BDBD
+AD
+AD
+AD
+
+--- Page 12 ---
+segundo Y TERCER paso 
+ESPERAR PULLBACK Y CONFIRMAR CON VORTEX SU POSIBLE FINAL
+  BAJISTA = VORTEX TOCA ARRIBA
+
+
+--- Page 13 ---
+ALCISTA= VORTEX TOCA ABAJO
+segundo Y TERCER paso 
+ESPERAR PULLBACK Y CONFIRMAR CON VORTEX SU POSIBLE FINAL
+
+--- Page 14 ---
+CUARTO paso 
+VENTAS
+CONFIRMAR ENTRADA CON GATILLO VORTEX Y PATRÓN EN V
+GATILLO: QUE VORTEX CAMBIE DE COLOR Y TENGAMOS UNA VELA QUE CIERRE EN FAVOR DEL MOVIMIENTO QUE
+ESPERAMOS. COLOCAMOS ORDEN PENDIENTE DE VENTA EN EL MINIMO DE ESA VELA Y EL STOP LOS EN EL MAXIMO DEL
+PULBACK
+
+--- Page 15 ---
+CUARTO paso CONFIRMAR ENTRADA CON GATILLO VORTEX Y PATRÓN EN V
+GATILLO: QUE VORTEX CAMBIE DE COLOR Y TENGAMOS UNA VELA QUE CIERRE EN FAVOR DEL MOVIMIENTO QUE
+ESPERAMOS. COLOCAMOS ORDEN PENDIENTE DE COMPRA EN EL MAXIMO DE ESA VELA Y EL STOP LOS EN EL MINIMO DEL
+PULBACK
+COMPRAS
+
+--- Page 16 ---
+ESTRATEGIA VORTEX 
+A TENER EN CUENTA
+Si la vela que le sigue a la que debe confirmar cierra contraria, anulamos
+la orden pendiente y esperamos nueva vela en favor de la tendencia.
+Si la orden no se activa y VORTEX cambia de color, esperamos a que
+vuelva a estar del color que debe estar para volver a colocar la orden.
+Si el precio antes de activar la orden crea un nuevo maximo o minimo,
+debemos reajustar nuestro SL al nuevo escenario y esperar a que VORTEX
+siga favorable a nuestra entrada.
+Si tenemos un SL, podemos reentrar solo si, en 4H vortex a vuelto a tocar
+extremo o si lo ha hecho en D (significa que quiza al activo le quedaba
+algo de retroceso). Pero siempre esperando el patron de entrada en 4H.
+
+--- Page 17 ---
+ESTRATEGIA VORTEX 
+GESTIÓN DEL RIESGO
+USAMOS 1:1 (SL 100 - TP 100) 2 operaciones dividas en el 0.5%
+0.25% por operación
+1 operación: 1:1
+2 operación se protege y deja
+correr (oveja negra)
+NORMAL (RECOMENDADO) GBS
+
+--- Page 18 ---
+ESTRATEGIA VORTEX 
+¡VAMOS AL GRÁFICO!
+

@@ -1,0 +1,36 @@
+Viewed TradingView_BVortex_Final.txt:1-23
+
+¡Hola de nuevo! Claro que sí, vamos a poner en perspectiva cómo tienes montado tu "cuartel general" tecnológico, porque tienes un entorno de trabajo muy avanzado y profesional. 
+
+Así es exactamente como está funcionando tu pantalla en este momento:
+
+### 1. Panel Izquierdo: El Explorador del Proyecto
+* **Qué es:** Es tu sistema de archivos visual, integrado dentro del IDE (el entorno de desarrollo) de **Antigravity** (que está construido sobre la misma base que Visual Studio Code).
+* **Para qué sirve:** Aquí tienes toda la estructura de tu laboratorio cuantitativo (`Proyecto_antigravity`). Vemos tus carpetas de `.claude`, `agents`, `docs`, `scripts`, `trading`, etc. Es desde donde yo (la IA) puedo buscar, leer y crear archivos de forma autónoma cuando me lo pides.
+
+### 2. Panel Derecho: Antigravity Chat (Yo)
+* **Qué es:** Soy tu asistente principal integrado directamente en el editor. Como bien has dicho, actualmente estoy funcionando con el motor **Gemini 3.1 Pro (High)** de Google desde la nube.
+* **Para qué sirve:** Mi trabajo es ser tu "Programador / Data Scientist Pair". Me encargo de tareas complejas: escribo código avanzado, modifico tus archivos automáticamente (usando herramientas integradas), leo tus errores, genero reportes Markdown y analizo lógicas de trading profundas.
+
+### 3. Panel Central: Editor y Terminal (Tu Lienzo de Trabajo)
+El centro de tu pantalla se divide en dos partes vitales:
+
+**A. La parte superior (El Editor de Código):**
+* **Qué es:** Es donde el código cobra vida. Ahora mismo tienes abierto el archivo `TradingView_BVortex_Final.txt`.
+* **Para qué sirve:** Es el lugar donde tú puedes leer, inspeccionar y modificar a mano cualquier cosa que yo haya programado o que tú hayas escrito. 
+
+**B. La parte inferior (La Terminal `pwsh` - PowerShell):**
+* **Qué es:** Es la consola del sistema operativo de tu Windows. Es el "motor" donde se ejecutan las órdenes reales.
+* **Para qué sirve:** Aquí es donde ejecutamos los comandos como `python trading/scratch/analyze_assets.py` para correr los backtests. 
+
+### 4. ¿Dónde encajan Ollama y Claude Code?
+Mencionas que tienes instalado Ollama local con Claude Code. ¡Es una combinación excelente! Así es como encaja en tu ecosistema:
+
+* **Ollama:** Es un programa que corre en segundo plano en tu ordenador. Su función es "encender" modelos de Inteligencia Artificial (como *Qwen* o *Gemma*) usando la memoria y tarjeta gráfica de tu propio PC, sin depender de internet ni pagar por tokens.
+* **Claude Code:** Es un asistente de IA por comandos. Está configurado para conectarse a tu Ollama local.
+* **¿Dónde se usa?:** Claude Code "vive" en la **Terminal** (el panel central abajo). Cuando tú escribes el comando de Claude en esa consola de PowerShell, se despierta tu modelo local de Ollama para ayudarte a ejecutar comandos, buscar cosas rápidas o hacer cambios en archivos desde la consola.
+
+**En resumen, tienes un flujo de trabajo híbrido (Nube + Local):**
+Por un lado me usas a mí (**Antigravity + Gemini en la nube**) en el panel derecho para la programación arquitectónica pesada, análisis profundo y planes estructurados. Por otro lado, tienes a **Claude Code + Ollama (Local)** en la terminal para tareas de comandos rápidos y privados directamente en tu máquina. 
+
+¡Tienes un laboratorio de IA súper puntero montado! ¿Te queda clara la distribución o tienes duda con alguna herramienta en concreto?

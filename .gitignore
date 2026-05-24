@@ -1,0 +1,69 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+.venv/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment variables
+.env
+.env.*
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+.claude/
+.continue/
+cline/
+
+# Local LLM and large files
+Modelfile_*
+*.gguf
+*.bin
+*.pt
+*.pth
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+# Market data and heavy results
+trading/data/raw/
+trading/results/raw/
+backtests/raw_data/
+backtests/resultados/
+analisis_mercado/
+paper_trading/
+produccion/
+
+# Large media and docs
+docs/trading_rules/laboratorio_ia_trading.pdf
+VortexOriginal/
+*.mp4
+*.mp3

@@ -1,0 +1,237 @@
+Perfecto. Vamos a construir tu laboratorio de IA dentro de Proyecto_antigravity, pero primero es importante que entiendas para qué sirve cada carpeta, porque esto luego te permitirá trabajar con agentes, modelos y proyectos sin desorden.
+
+La estructura será esta:
+
+Proyecto_antigravity
+│
+├─ docs
+├─ trading
+├─ automatizaciones
+├─ scraping
+├─ proyectos-clientes
+├─ experimentos
+├─ scripts
+└─ .claude
+    └─ agents
+
+Este laboratorio funcionará sobre:
+
+Antigravity
+Visual Studio Code
+Ollama
+Claude Code
+
+y los modelos locales que ya tienes instalados.
+
+📁 1. docs
+
+Carpeta de documentación del laboratorio.
+
+Aquí guardarás:
+
+guías
+manuales
+configuraciones
+decisiones técnicas
+prompts importantes
+instrucciones de uso
+
+Ejemplo:
+
+docs
+│
+├─ Entorno_IA_Local.md
+├─ configuracion_ollama.md
+├─ agentes_claude.md
+└─ ideas_proyectos.md
+
+Es básicamente la memoria del laboratorio.
+
+📁 2. trading
+
+Espacio dedicado a proyectos de trading y análisis de mercados.
+
+Aquí pueden vivir:
+
+scripts de análisis
+estrategias
+indicadores
+backtesting
+dashboards
+
+Ejemplo:
+
+trading
+│
+├─ estrategias
+├─ indicadores
+├─ backtesting
+└─ dashboards
+
+Aquí probablemente acabarás trabajando con:
+
+Pine Script
+Python
+análisis de datos
+automatización de trading.
+📁 3. automatizaciones
+
+Carpeta para automatización de procesos.
+
+Aquí irán proyectos relacionados con:
+
+Make
+n8n
+APIs
+integraciones
+workflows automáticos.
+
+Ejemplo:
+
+automatizaciones
+│
+├─ n8n
+├─ make
+├─ scripts_api
+└─ integraciones
+
+Esto sirve para construir automatizaciones con IA.
+
+📁 4. scraping
+
+Todo lo relacionado con extracción de datos de internet.
+
+Ejemplo:
+
+scraping
+│
+├─ noticias
+├─ mercados
+├─ webs
+└─ pruebas
+
+Aquí puedes guardar:
+
+scrapers en Python
+Playwright
+BeautifulSoup
+extracción de datos financieros.
+📁 5. proyectos-clientes
+
+Carpeta para proyectos reales para clientes o empresas.
+
+Sirve para separar lo experimental de lo profesional.
+
+Ejemplo:
+
+proyectos-clientes
+│
+├─ cliente1
+├─ cliente2
+└─ proyecto_marketing
+
+Esto evita mezclar pruebas con proyectos importantes.
+
+📁 6. experimentos
+
+Zona de laboratorio puro.
+
+Aquí puedes probar:
+
+nuevos modelos
+prompts
+ideas
+agentes
+pruebas rápidas.
+
+Ejemplo:
+
+experimentos
+│
+├─ pruebas_llm
+├─ prompts
+├─ agentes_experimentales
+└─ test_scripts
+
+Es donde se rompen cosas sin miedo.
+
+📁 7. scripts
+
+Scripts que ayudan a arrancar o gestionar el laboratorio.
+
+Aquí estará el script que creamos:
+
+scripts
+│
+└─ start-ai.ps1
+
+Sirve para:
+
+arrancar el entorno
+comprobar Ollama
+lanzar Claude Code.
+📁 8. .claude
+
+Carpeta especial usada por Claude Code.
+
+Aquí vive la configuración de los agentes IA.
+
+.claude
+│
+├─ settings.json
+└─ agents
+Carpeta agents
+
+Contendrá agentes especializados como:
+
+agents
+│
+├─ trading-analyst.md
+├─ automation-builder.md
+└─ code-auditor.md
+
+Esto permite que Claude cambie de comportamiento según el contexto.
+
+🧠 Cómo funciona todo junto
+
+Tu laboratorio funcionará así:
+
+Antigravity
+      ↓
+VS Code
+      ↓
+Claude Code
+      ↓
+Ollama
+      ↓
+modelos locales
+
+Y Claude podrá leer todo el laboratorio.
+
+📌 Antes de crear las carpetas
+
+Quiero confirmar una cosa rápida contigo.
+
+¿Prefieres que el laboratorio sea:
+
+opción A (simple)
+Proyecto_antigravity
+├─ docs
+├─ trading
+├─ automatizaciones
+├─ scraping
+├─ proyectos-clientes
+├─ experimentos
+├─ scripts
+└─ .claude
+opción B (más profesional tipo AI-Lab)
+Proyecto_antigravity
+├─ lab
+├─ proyectos
+├─ automatizaciones
+├─ data
+├─ docs
+├─ scripts
+└─ .claude
+
+La B es más escalable si el laboratorio crece mucho.

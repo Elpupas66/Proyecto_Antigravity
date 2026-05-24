@@ -1,0 +1,12 @@
+{
+  "filters": {
+    "vwap": {"enabled": true, "anchor": "LDN_open"},
+    "spread": {"enabled": false, "max_pips": 2.0},
+    "direction": "BOTH",
+    "fakeout_mode": "OFF"
+  },
+  "forex_pairs": {
+    "majors": ["EURUSD","GBPUSD","USDJPY","USDCHF","AUDUSD","NZDUSD","USDCAD"],
+    "crosses": ["EURJPY","GBPJPY","EURGBP","GBPCHF","EURAUD","GBPAUD"]
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "strategy_name": "ORB MultiSymbol Trading",
+  "version": "1.0",
+  
+  "core_params": {
+    "timeframes": ["M15", "M30"],
+    "sessions": {
+      "london": {"hour": 8, "end_hour": 12},
+      "new_york": {"hour": 13.5, "end_hour": 20}
+    },
+    "opening_range": {
+      "min_pips": 3.0,
+      "max_pips": 50.0
+    }
+  },
+  
+  "entry_logic": {
+    "modes": ["ORB", "ANTI-ORB", "FAKEOUT"],
+    "entry_types": ["MARKET", "PULLBACK"],
+    "pullback_offset": 0.5
+  },
+  
+  "risk_management": {
+    "initial_balance": 10000,
+    "risk_per_trade": 1.0,
+    "max_loss_daily": 3.0,
+    "max_trades_per_day": 2,
+    "max_concurrent_trades": 4
+  },
+  
+  "take_profit": {
+    "tp1": 10.0,
+    "tp2": 30.0,
+    "use_runner": true,
+    "breakeven_offset": 1.0
+  },
+  
+  "stop_loss": {
+    "orb_sl_logic": true,
+    "fakeout_sl_logic": true
+  },
+  
+  "filters": {
+    "vwap": {
+      "enabled": true,
+      "timeframe": "H1",
+      "days_back": 3
+    },
+    "csi": {
+      "enabled": true,
+      "min_strength_diff": 15
+    },
+    "spread": { "max_pips": 0 },
+    "weekdays": ["monday", "tuesday", "wednesday", "thursday"]
+  },
+  
+  "symbols": ["EURUSD", "GBPUSD", "USDJPY", "EURGBP", "GBPJPY", "XAUUSD"]
+}

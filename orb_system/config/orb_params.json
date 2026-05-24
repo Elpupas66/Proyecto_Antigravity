@@ -1,0 +1,14 @@
+{
+  "orb_timeframes": ["M15", "M30"],
+  "min_range_pips": 3.0,
+  "max_range_pips": 50.0,
+  "mode": "ORB",
+  "entry_type": "MARKET",
+  "tp1_pips": 10.0,
+  "tp2_pips": 30.0,
+  "sl_type": "range_opposite",
+  "breakeven": true,
+  "be_offset_pips": 1.0,
+  "trailing": false,
+  "trail_step_pips": 10.0
+}

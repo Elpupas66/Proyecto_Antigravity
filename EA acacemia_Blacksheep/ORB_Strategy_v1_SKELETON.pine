@@ -1,0 +1,256 @@
+// ============================================================
+// ORB Multi-Forex Strategy v1.0 — TradingView Pine Script v5
+// Basado en: ORB_MultiSymbol_v4.7 (BlackSheep Quant Lab)
+// Director: Antigravity | Agente 2: Pine Script Developer
+// Solo Forex | Backtesting IS/OOS
+// ============================================================
+//@version=5
+strategy(
+     title       = "ORB Forex Strategy [BlackSheep]",
+     shorttitle  = "ORB-FX",
+     overlay     = true,
+     margin_long = 100,
+     margin_short= 100,
+     default_qty_type  = strategy.percent_of_equity,
+     default_qty_value = 1,
+     commission_type   = strategy.commission.percent,
+     commission_value  = 0.01,
+     slippage    = 2,
+     max_bars_back= 500
+ )
+
+// ============================================================
+// INPUTS — SESIÓN
+// ============================================================
+grp_session = "════ SESIÓN ════"
+session_mode = input.string("LDN", "Sesión activa",
+     options=["LDN","NY","LDN+NY","ASIA"], group=grp_session)
+
+// Horarios GMT (el usuario ajusta según su bróker)
+gmt_offset   = input.int(2, "Offset GMT del bróker (horas)", minval=-12, maxval=12, group=grp_session)
+
+ldn_open_h   = input.int(8,  "LDN — Hora apertura (GMT)", group=grp_session)
+ldn_open_m   = input.int(0,  "LDN — Minuto apertura (GMT)", group=grp_session)
+ldn_close_h  = input.int(12, "LDN — Hora cierre (GMT)", group=grp_session)
+
+ny_open_h    = input.int(13, "NY  — Hora apertura (GMT)", group=grp_session)
+ny_open_m    = input.int(30, "NY  — Minuto apertura (GMT)", group=grp_session)
+ny_close_h   = input.int(20, "NY  — Hora cierre (GMT)", group=grp_session)
+
+mon_ok = input.bool(true, "Lunes",    group=grp_session, inline="days")
+tue_ok = input.bool(true, "Martes",   group=grp_session, inline="days")
+wed_ok = input.bool(true, "Miércoles",group=grp_session, inline="days")
+thu_ok = input.bool(true, "Jueves",   group=grp_session, inline="days")
+fri_ok = input.bool(true, "Viernes",  group=grp_session, inline="days")
+
+// ============================================================
+// INPUTS — RANGO ORB
+// ============================================================
+grp_orb = "════ RANGO ORB ════"
+orb_tf_minutes = input.int(15, "Minutos del rango ORB (15 ó 30)", options=[15, 30], group=grp_orb)
+min_pips = input.float(3.0,  "Rango mínimo (pips)", step=0.5, group=grp_orb)
+max_pips = input.float(50.0, "Rango máximo (pips)", step=1.0, group=grp_orb)
+
+// ============================================================
+// INPUTS — OPERATIVA
+// ============================================================
+grp_trade = "════ OPERATIVA ════"
+orb_mode  = input.string("ORB", "Modo", options=["ORB","ANTI","AMBOS"], group=grp_trade)
+entry_mode= input.string("Mercado", "Entrada", options=["Mercado","Pullback","Ambas"], group=grp_trade)
+pb_offset = input.float(0.5, "Offset pullback (pips)", step=0.1, group=grp_trade)
+dir_filter= input.string("Ambas", "Dirección", options=["Ambas","Solo Compras","Solo Ventas"], group=grp_trade)
+max_spread= input.float(0.0, "Spread máximo (pips, 0=off)", step=0.5, group=grp_trade)
+
+// ============================================================
+// INPUTS — GESTIÓN DE TRADE
+// ============================================================
+grp_exit = "════ TP / SL ════"
+tp1_pips  = input.float(10.0, "TP1 (pips)", step=1.0, group=grp_exit)
+tp2_pips  = input.float(30.0, "TP2 (pips, 0=runner)", step=1.0, group=grp_exit)
+use_be    = input.bool(true,  "Break-even al alcanzar TP1", group=grp_exit)
+be_offset = input.float(1.0,  "Pips extra en break-even", step=0.1, group=grp_exit)
+use_trail = input.bool(false, "Trailing stop activo", group=grp_exit)
+trail_pips= input.float(10.0, "Distancia trailing (pips)", step=1.0, group=grp_exit)
+
+// ============================================================
+// INPUTS — RIESGO
+// ============================================================
+grp_risk = "════ RIESGO ════"
+use_risk_pct  = input.bool(false, "Calcular lote por % riesgo", group=grp_risk)
+risk_pct      = input.float(1.0,  "% riesgo por operación", step=0.1, group=grp_risk)
+max_loss_pct  = input.float(3.0,  "Pérdida diaria máxima (%)", step=0.5, group=grp_risk)
+max_per_day   = input.int(2,      "Máx trades por día", minval=1, group=grp_risk)
+
+// ============================================================
+// INPUTS — FILTROS
+// ============================================================
+grp_filters = "════ FILTROS ════"
+use_vwap    = input.bool(true, "Filtro VWAP", group=grp_filters)
+// Nota: CSI (Currency Strength) no es replicable en Pine Script nativo
+//       Se usará como filtro opcional vía alerta externa
+
+// ============================================================
+// INPUTS — BACKTESTING IS/OOS
+// ============================================================
+grp_bt = "════ BACKTESTING ════"
+is_start  = input.time(timestamp("2020-01-01"), "Inicio In-Sample",  group=grp_bt)
+is_end    = input.time(timestamp("2023-12-31"), "Fin In-Sample",     group=grp_bt)
+oos_start = input.time(timestamp("2024-01-01"), "Inicio Out-of-Sample", group=grp_bt)
+oos_end   = input.time(timestamp("2025-12-31"), "Fin Out-of-Sample", group=grp_bt)
+show_phase= input.string("IS+OOS", "Mostrar fase", options=["IS","OOS","IS+OOS"], group=grp_bt)
+
+// ============================================================
+// CONSTANTES — PIP SIZE (Forex)
+// ============================================================
+// Para FX: 5 dígitos → pip = 0.0001 | 3 dígitos (JPY) → pip = 0.01
+pip_size = syminfo.mintick * (str.contains(syminfo.ticker, "JPY") ? 100 : 10)
+
+// ============================================================
+// HELPERS DE TIEMPO
+// ============================================================
+broker_hour(gmt_h) => gmt_h + gmt_offset
+
+is_day_ok() =>
+    dw = dayofweek
+    (dw == dayofweek.monday    and mon_ok) or
+    (dw == dayofweek.tuesday   and tue_ok) or
+    (dw == dayofweek.wednesday and wed_ok) or
+    (dw == dayofweek.thursday  and thu_ok) or
+    (dw == dayofweek.friday    and fri_ok)
+
+// Inicio de la vela de apertura de sesión (en hora del bróker)
+ldn_open_bar = hour == broker_hour(ldn_open_h) and minute == ldn_open_m
+ny_open_bar  = hour == broker_hour(ny_open_h)  and minute == ny_open_m
+
+in_ldn_session = (hour >= broker_hour(ldn_open_h) and hour < broker_hour(ldn_close_h))
+in_ny_session  = (hour >= broker_hour(ny_open_h)  and hour < broker_hour(ny_close_h))
+
+in_active_session =
+     (session_mode == "LDN"    and in_ldn_session) or
+     (session_mode == "NY"     and in_ny_session)  or
+     (session_mode == "LDN+NY" and (in_ldn_session or in_ny_session)) or
+     (session_mode == "ASIA"   and hour < broker_hour(6))
+
+// ============================================================
+// FASE IS / OOS (control de ventana de backtesting)
+// ============================================================
+in_is_window  = time >= is_start  and time <= is_end
+in_oos_window = time >= oos_start and time <= oos_end
+
+in_bt_window =
+     (show_phase == "IS"     and in_is_window)  or
+     (show_phase == "OOS"    and in_oos_window) or
+     (show_phase == "IS+OOS" and (in_is_window or in_oos_window))
+
+// ============================================================
+// CÁLCULO DEL RANGO ORB
+// ============================================================
+// TODO: Agente 2 completará esta sección con la lógica exacta
+// El rango se define en la(s) vela(s) de apertura de sesión
+
+var float orb_high = na
+var float orb_low  = na
+var bool  orb_ready = false
+var bool  orb_traded = false
+
+// Reset diario
+new_day = ta.change(dayofmonth) != 0
+if new_day
+    orb_high   := na
+    orb_low    := na
+    orb_ready  := false
+    orb_traded := false
+
+// Captura del rango (M15 apertura sesión)
+// [AGENTE 2: implementar lógica de captura según sesión activa]
+
+// ============================================================
+// FILTRO VWAP
+// ============================================================
+// VWAP anclado al open de sesión
+// [AGENTE 2: implementar VWAP anchored]
+vwap_val = ta.vwap(hlc3)  // placeholder — versión básica
+
+long_vwap_ok  = not use_vwap or close > vwap_val
+short_vwap_ok = not use_vwap or close < vwap_val
+
+// ============================================================
+// SPREAD CHECK
+// ============================================================
+spread_ok = max_spread <= 0 or (high - low) / pip_size <= max_spread
+
+// ============================================================
+// SEÑALES DE ENTRADA (placeholder — Agente 2 completa)
+// ============================================================
+// ORB breakout alcista: cierre por encima del rango
+long_signal  = orb_ready and not orb_traded and
+               close > orb_high and
+               (dir_filter != "Solo Ventas") and
+               long_vwap_ok and spread_ok and
+               in_active_session and is_day_ok() and
+               in_bt_window
+
+// ORB breakout bajista: cierre por debajo del rango
+short_signal = orb_ready and not orb_traded and
+               close < orb_low and
+               (dir_filter != "Solo Compras") and
+               short_vwap_ok and spread_ok and
+               in_active_session and is_day_ok() and
+               in_bt_window
+
+// ============================================================
+// EJECUCIÓN DE TRADES (TradingView Strategy)
+// ============================================================
+sl_long  = orb_low  - (1 * pip_size)   // SL debajo del rango
+sl_short = orb_high + (1 * pip_size)   // SL encima del rango
+
+tp1_long  = close + tp1_pips * pip_size
+tp1_short = close - tp1_pips * pip_size
+tp2_long  = close + tp2_pips * pip_size
+tp2_short = close - tp2_pips * pip_size
+
+// Posición 1: TP1 (50% del capital)
+if long_signal
+    strategy.entry("ORB_L1", strategy.long,  comment="ORB LONG TP1")
+if short_signal
+    strategy.entry("ORB_S1", strategy.short, comment="ORB SHORT TP1")
+
+// [AGENTE 2: añadir exits, BE, trailing, TP2 runner]
+
+// ============================================================
+// VISUAL — Rango ORB en gráfico
+// ============================================================
+plot(orb_high, "ORB High", color=color.new(color.blue, 0),  linewidth=1, style=plot.style_stepline)
+plot(orb_low,  "ORB Low",  color=color.new(color.blue, 0),  linewidth=1, style=plot.style_stepline)
+plot(vwap_val, "VWAP",     color=color.new(color.purple, 0), linewidth=1)
+
+// Fondo de sesión activa
+bgcolor(in_ldn_session and session_mode != "NY"  ? color.new(color.green, 92) : na, title="Sesión LDN")
+bgcolor(in_ny_session  and session_mode != "LDN" ? color.new(color.blue,  92) : na, title="Sesión NY")
+
+// Marcas IS / OOS
+bgcolor(in_is_window  and show_phase != "OOS" ? color.new(color.yellow, 97) : na, title="In-Sample")
+bgcolor(in_oos_window and show_phase != "IS"  ? color.new(color.orange, 97) : na, title="Out-of-Sample")
+
+// ============================================================
+// TABLA DE INFO (dashboard)
+// ============================================================
+var table info_table = table.new(position.top_right, 2, 6,
+     bgcolor=color.new(color.black, 80),
+     border_color=color.gray, border_width=1,
+     frame_color=color.gray, frame_width=1)
+
+if barstate.islast
+    table.cell(info_table, 0, 0, "ORB-FX",    text_color=color.white,  text_size=size.normal)
+    table.cell(info_table, 1, 0, "v1.0",       text_color=color.yellow, text_size=size.normal)
+    table.cell(info_table, 0, 1, "Sesión",     text_color=color.gray,   text_size=size.small)
+    table.cell(info_table, 1, 1, session_mode, text_color=color.white,  text_size=size.small)
+    table.cell(info_table, 0, 2, "Modo ORB",   text_color=color.gray,   text_size=size.small)
+    table.cell(info_table, 1, 2, orb_mode,     text_color=color.white,  text_size=size.small)
+    table.cell(info_table, 0, 3, "VWAP",       text_color=color.gray,   text_size=size.small)
+    table.cell(info_table, 1, 3, use_vwap ? "ON" : "OFF", text_color=use_vwap ? color.green : color.red, text_size=size.small)
+    table.cell(info_table, 0, 4, "Fase BT",    text_color=color.gray,   text_size=size.small)
+    table.cell(info_table, 1, 4, show_phase,   text_color=color.orange, text_size=size.small)
+    table.cell(info_table, 0, 5, "TP1/TP2",   text_color=color.gray,   text_size=size.small)
+    table.cell(info_table, 1, 5, str.tostring(tp1_pips)+"p / "+str.tostring(tp2_pips)+"p",
+               text_color=color.white, text_size=size.small)
