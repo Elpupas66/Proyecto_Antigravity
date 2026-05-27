@@ -28,6 +28,8 @@ venv.bak/
 # Environment variables
 .env
 .env.*
+!.env.example
+
 
 # IDEs and Editors
 .vscode/
@@ -67,3 +69,13 @@ docs/trading_rules/laboratorio_ia_trading.pdf
 VortexOriginal/
 *.mp4
 *.mp3
+
+# Academic delivery specific exclusions
+*.pyc
+*.db
+*.sqlite
+*.sqlite3
+*.parquet
+*.csv
+*.log
+

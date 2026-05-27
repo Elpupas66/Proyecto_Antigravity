@@ -1,163 +1,252 @@
 # Proyecto Antigravity 🚀
 
-**Proyecto Antigravity** es un entorno integral para el diseño, validación y ejecución de sistemas de trading algorítmico automatizados. El repositorio combina herramientas de inteligencia artificial, documentación técnica, utilidades de análisis y scripts operativos para soportar distintas fases del ciclo de vida de una estrategia: investigación, desarrollo, backtesting, paper trading y despliegue.
+## 🏫 Proyecto Académico de Trading Algorítmico
 
-## Objetivo
+**Antigravity** es un sistema académico de trading algorítmico asistido por IA, desarrollado como proyecto de fin de curso. El proyecto demuestra habilidades en diseño de arquitecturas de software, integración de APIs, seguridad financiera y sistemas de evaluación de riesgo.
 
-Este proyecto sirve como laboratorio técnico para:
+> ⚠️ **AVISO IMPORTANTE**: Este proyecto **NO ejecuta operaciones reales** en mercados financieros. Todos los mecanismos de seguridad están configurados para bloquear la ejecución real.
 
-- Diseñar estrategias de trading algorítmico.
-- Probar flujos asistidos por IA para análisis, documentación y automatización.
-- Ejecutar validaciones y backtests sobre datos históricos.
-- Preparar despliegues hacia entornos de paper trading y producción.
-- Centralizar documentación, reglas de negocio y bitácoras del proyecto.
+---
 
-## Estructura del proyecto
+## 📚 Objetivo Académico
 
-### Documentación
-- `docs/architecture/`: documentos de diseño técnico y PRDs.
-- `docs/environment/`: guías de entorno local, VS Code, IA local y configuración.
-- `docs/management/`: bitácoras, entregables y seguimiento del proyecto.
-- `docs/trading_rules/`: reglas base, normativa del laboratorio y reportes funcionales.
+Este proyecto fue desarrollado para demostrar:
 
-### Núcleo de trading
-- `trading/`: lógica principal del sistema de trading.
-  - `config/`: configuración general.
-  - `data/`: datos procesados y fuentes de mercado.
-  - `deploy/`: artefactos finales para MT5 y TradingView.
-  - `results/`: resultados de pruebas, comparativas y resúmenes.
-  - `strategies/`: estrategias implementadas.
-  - `utils/`: utilidades auxiliares.
+1. **Arquitectura de Software**: Diseño de sistemas distribuidos con FastAPI
+2. **Seguridad Financiera**: Motor de evaluación de riesgo con reglas deterministas
+3. **Integración de Sistemas**: API REST, bases de datos SQLite, validación de configuraciones
+4. **Desarrollo Seguro**: Variables de entorno, gestión de secretos, .gitignore
 
-### Estrategia y validación
-- `estrategia/`: documentación funcional, scripts de MT5, TradingView y versiones de estrategia.
-- `backtests/`: comparativas, datos brutos y resultados de backtesting.
-- `paper_trading/`: logs y reportes semanales de simulación.
-- `produccion/`: alertas, logs operativos y reportes de rendimiento.
+## 🧱 Arquitectura: Bot + Agente IA + Ecosistema
 
-### Automatización y soporte
-- `automatizaciones/`: flujos automáticos, por ejemplo integraciones tipo n8n.
-- `scripts/`: utilidades operativas y scripts de soporte.
-- `scratch/`: pruebas rápidas, utilidades temporales y scripts auxiliares.
+El proyecto Antigravity se concibe como un ecosistema integral de trading algorítmico estructurado en tres componentes:
 
-## Requisitos
+- **Bot Algorítmico**: Receptor y enrutador de señales técnicas basadas en indicadores (e.g., TradingView vía webhooks y orquestación con n8n). En esta fase académica, actúa como el emisor de los intentos de operación (`TradeIntent`).
+- **Agente IA**: Componente en fase de diseño/roadmap que utilizará LLMs locales (como Ollama) para la validación contextual de operaciones, análisis cualitativo y generación de explicaciones.
+- **Ecosistema**: El núcleo base desarrollado en FastAPI, el motor determinista **RiskEngine** que aplica 7 reglas de seguridad estrictas de forma local, y la base de datos **SQLite** para persistir de manera segura la bitácora de auditoría.
 
-- Python instalado.
-- Entorno virtual recomendado (`.venv`).
-- Archivo `.env` en la raíz con las variables necesarias.
-- Dependencias instaladas desde `requirements.txt`.
+---
 
-## Inicio rápido
+## 🎯 Estado Actual
 
-1. Activa el entorno virtual:
+| Componente | Estado |
+|------------|--------|
+| FastAPI Core | ✅ Funcional |
+| RiskEngine | ✅ 7/7 tests pasando |
+| SQLite Database | ✅ Funcional |
+| /health endpoint | ✅ Verificado |
+| Kill Switch | ❌ No implementado |
+| MT5 Integration | ❌ No implementado |
+| Telegram Bot | ❌ No implementado |
+| Ejecución Real | ❌ Bloqueada |
 
-   ```bash
-   # Windows
-   .venv\Scripts\activate
-   ```
+---
 
-2. Instala las dependencias:
+## 🔧 Instalación
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+### 1. Requisitos Previos
+- Python 3.10+
+- Windows/macOS/Linux
 
-3. Configura las variables de entorno:
-
-   - Crea un archivo `.env` en la raíz del proyecto.
-   - Nunca subas este archivo al repositorio.
-
-4. Inicia los servicios o scripts necesarios:
-
-   ```bash
-   start_gatekeeper.bat
-   ```
-
-## Flujo de trabajo recomendado
-
-1. Leer la documentación base del entorno y arquitectura.
-2. Revisar reglas del laboratorio y documentación de estrategia.
-3. Ejecutar pruebas o validaciones desde `scripts/` y `trading/`.
-4. Guardar resultados en rutas de trabajo locales no versionadas cuando sean datos pesados.
-5. Preparar despliegues finales desde `trading/deploy/`.
-
-## Archivos y carpetas no versionadas
-
-Algunas carpetas contienen datos pesados, resultados temporales o archivos multimedia y deben quedar excluidas mediante `.gitignore`, por ejemplo:
-
-- `trading/data/raw/`
-- `trading/results/raw/`
-- `backtests/raw_data/`
-- `backtests/resultados/`
-- `analisis_mercado/`
-- `paper_trading/`
-- `produccion/`
-- `VortexOriginal/`
-
-## Documentación recomendada para empezar
-
-Se recomienda comenzar por:
-
-- [`docs/architecture/PRD_AI_DEV_ENV.md`](./docs/architecture/PRD_AI_DEV_ENV.md)
-- `docs/environment/`
-- `docs/trading_rules/`
-
-## Estado del proyecto
-
-Repositorio en evolución continua, con foco en:
-- entorno de desarrollo asistido por IA,
-- validación de estrategias,
-- automatización operativa (Pipeline E2E validado: Telegram/TradingView -> n8n -> Gatekeeper API -> MT5),
-- reglas de riesgo y filtros emocionales activos,
-- integración con herramientas de trading y análisis.
-## Comandos útiles
-
-### Entorno y dependencias
-
+### 2. Clonar el Repositorio
 ```bash
-# Activar entorno virtual en Windows
+git clone <repo-url>
+cd Proyecto_antigravity
+```
+
+### 3. Crear Entorno Virtual (Recomendado)
+```bash
+# Windows
+python -m venv .venv
 .venv\Scripts\activate
 
-# Instalar dependencias
+# macOS/Linux
+python -m venv .venv
+source .venv/bin/activate
+```
+
+### 4. Instalar Dependencias
+```bash
 pip install -r requirements.txt
 ```
 
-### Arranque de servicios
-
+### 5. Configurar Variables de Entorno
 ```bash
-# Iniciar Gatekeeper desde Windows
-start_gatekeeper.bat
+# Copiar el archivo de ejemplo
+copy .env.example .env
+
+# NOTA: El archivo .env contiene las configuraciones de seguridad
+# NO subir .env al repositorio (ya está en .gitignore)
 ```
 
-### Scripts de soporte
+---
 
+## 🚀 Cómo Arrancar FastAPI
+
+### Iniciar el Servidor
+
+Por defecto, el servidor intentará arrancar en el puerto `8000`:
 ```bash
-# Lanzar bot/API Gatekeeper manualmente
-python scripts/gatekeeper_bot.py
-python scripts/gatekeeper_api.py
-
-# Probar la API desde PowerShell
-powershell -ExecutionPolicy Bypass -File test_api.ps1
+python -m uvicorn core.main:app --reload
 ```
 
-### Trading y validación
+> 💡 **Nota de resolución de problemas**: Si el puerto `8000` falla (por ejemplo, debido a conflictos de permisos o colisiones de sockets en Windows con `WinError 10013`), arranca el servidor en el puerto alternativo `8080` ejecutando:
+> ```bash
+> python -m uvicorn core.main:app --host 127.0.0.1 --port 8080
+> ```
 
+### Documentación Automática
+- Swagger UI: `http://127.0.0.1:8000/docs` (o `http://127.0.0.1:8080/docs`)
+- ReDoc: `http://127.0.0.1:8000/redoc` (o `http://127.0.0.1:8080/redoc`)
+
+### Verificar Estado
+
+Desde otra terminal, puedes comprobar la salud del servicio:
 ```bash
-# Ejecutar backtest principal
-python trading/run_backtest.py
-
-# Ejecutar pruebas o utilidades
-python scripts/run_test_data.py
-python scripts/test_mt5_deepseek.py
+curl http://127.0.0.1:8000/health
+```
+*(O si usas el puerto alternativo `8080`):*
+```bash
+curl http://127.0.0.1:8080/health
 ```
 
-### Diagnóstico rápido
+Debería devolver:
+```json
+{
+  "status": "ok",
+  "service": "antigravity_core",
+  "security_locks": {
+    "environment": "development",
+    "real_execution_allowed": false,
+    "approval_required": true
+  }
+}
+```
+
+---
+
+## 🧪 Ejecutar Tests
+
+### Tests del RiskEngine
+```bash
+python tests/test_risk_engine.py
+```
+
+**Resultado esperado**: 7/7 tests pasando
+
+```
+✅ PASS | T1 | Trade válido (demo, aprobado por usuario) → APPROVED
+✅ PASS | T2 | Trade sin UUID → REJECTED (R5)
+✅ PASS | T3 | Pérdida diaria excedida → REJECTED (R3)
+✅ PASS | T4 | Máximo de trades concurrentes alcanzado → REJECTED (R4)
+✅ PASS | T5 | Ejecución real bloqueada → REJECTED (R1)
+✅ PASS | T6 | Campos mínimos ausentes → REJECTED (R6)
+✅ PASS | T7 | Sin aprobación de usuario → REJECTED (R2)
+
+RESULTADO FINAL: 7/7 tests pasados | 0 fallados
+```
+
+---
+
+## 📁 Estructura del Proyecto
+
+```
+Proyecto_antigravity/
+├── .env                    # ⚠️ NO subir a Git (secretos)
+├── .env.example           # ✅ Plantilla segura
+├── .gitignore             # ✅ Configurado
+├── core/                  # ✅ Núcleo del sistema
+│   ├── main.py           # FastAPI app
+│   ├── risk_engine.py    # Motor de riesgo
+│   ├── database.py       # SQLite
+│   ├── models.py        # Modelos Pydantic
+│   └── settings.py      # Configuración segura
+├── tests/                 # ✅ Tests unitarios
+│   └── test_risk_engine.py
+├── docs/                  # ✅ Documentación
+│   ├── architecture/
+│   ├── management/
+│   └── trading_rules/
+└── README.md
+```
+
+---
+
+## 🔒 Seguridad
+
+### Variables de Seguridad Activas
+
+El sistema está configurado con múltiples capas de seguridad:
 
 ```bash
-# Comprobar entorno
-python scratch/debug_env.py
-
-# Verificar estado y símbolo MT5
-python scratch/check_mt5_status.py
-python scratch/check_mt5_symbol.py
+# En .env (NUNCA subir a Git)
+ENVIRONMENT=development
+ALLOW_REAL_EXECUTION=False
+REQUIRE_APPROVAL=True
 ```
+
+### Reglas de Riesgo Implementadas
+
+| ID | Regla | Descripción |
+|----|-------|-------------|
+| R1 | REAL_EXECUTION_BLOCKED | Bloquea ejecución real |
+| R2 | APPROVAL_REQUIRED | Requiere aprobación humana |
+| R3 | DAILY_LOSS_EXCEEDED | Límite de pérdida diaria (2%) |
+| R4 | MAX_TRADES_EXCEEDED | Máximo 3 trades concurrentes |
+| R5 | MISSING_UUID | Requiere identificador único |
+| R6 | MISSING_FIELDS | Requiere campos mínimos |
+
+---
+
+## 📖 Documentación
+
+### Para Empezar
+1. **[Arquitectura](./docs/architecture/ARCHITECTURE_OVERVIEW.md)**: Visión general del sistema
+2. **[Estado del Proyecto](./docs/management/PROJECT_STATUS.md)**: Qué está implementado
+3. **[Roadmap](./docs/management/ROADMAP_NEXT_STEPS.md)**: Próximos pasos
+
+### Documentación Técnica
+- `docs/architecture/PRD_AI_DEV_ENV.md`
+- `docs/trading_rules/normas_proyecto_trading.md`
+- `docs/management/bitacora_proyecto.md`
+
+---
+
+## ❌ Limitaciones Actuales
+
+Este proyecto **NO** incluye (por diseño):
+
+- ❌ Conexión con MetaTrader 5
+- ❌ Ejecución de operaciones reales
+- ❌ Telegram Bot funcional
+- ❌ Paper Trading completo
+- ❌ Integración con n8n
+- ❌ AI Validator
+
+Estas funcionalidades están planned para fases futuras, pero **la ejecución real permanecerá bloqueada** por razones de seguridad.
+
+---
+
+## 📝 Commits Recientes
+
+```bash
+66eb410 - Validate T2.1 deterministic RiskEngine
+a52556e - Backup: Estado base legacy
+```
+
+---
+
+## 📬 Contacto
+
+Este es un proyecto académico. Para preguntas sobre la arquitectura o el código, revisar la documentación en `docs/`.
+
+---
+
+## ⚠️ Disclaimer
+
+**Este proyecto es con fines educativos y académicos.**
+
+- NO utilizar para trading con dinero real
+- NO conectar a cuentas reales de brokers
+- El autor no se hace responsable de pérdidas financieras
+- Siempre usar cuenta demo para cualquier prueba
