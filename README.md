@@ -1,5 +1,9 @@
 # Proyecto Antigravity 🚀
 
+## Desarrollo asistido con Google Antigravity
+
+Este proyecto se está desarrollando con ayuda de Google Antigravity como entorno de asistencia, planificación, implementación controlada y validación técnica.
+
 ## 🏫 Proyecto Académico de Trading Algorítmico
 
 **Antigravity** es un sistema académico de trading algorítmico asistido por IA, desarrollado como proyecto de fin de curso. El proyecto demuestra habilidades en diseño de arquitecturas de software, integración de APIs, seguridad financiera y sistemas de evaluación de riesgo.

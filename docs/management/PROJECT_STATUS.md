@@ -1,3 +1,7 @@
+## Uso de Google Antigravity
+
+Este proyecto se está desarrollando con ayuda de Google Antigravity como entorno de asistencia, planificación, implementación controlada y validación técnica. Las decisiones arquitectónicas, la división por fases, la preparación del repositorio y las validaciones técnicas se han realizado dentro de este flujo de trabajo asistido.
+
 # Estado del Proyecto Antigravity
 
 ## 📊 Resumen Ejecutivo
