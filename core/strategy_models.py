@@ -43,6 +43,39 @@ class BacktestPeriod(BaseModel):
     end_date: datetime
     label: str  # e.g., IS, OOS, PAPER
 
+class TradeDirection(str, Enum):
+    BUY = "BUY"
+    SELL = "SELL"
+
+class TradeRecord(BaseModel):
+    ticket: str = Field(..., description="ID de transacción único")
+    symbol: str = Field(..., description="Activo financiero")
+    open_time: datetime = Field(..., description="Fecha de apertura")
+    close_time: datetime = Field(..., description="Fecha de cierre")
+    direction: TradeDirection = Field(..., description="Dirección BUY/SELL")
+    volume: float = Field(..., gt=0.0, description="Volumen en lotes")
+    open_price: float = Field(..., gt=0.0, description="Precio de apertura")
+    close_price: float = Field(..., gt=0.0, description="Precio de cierre")
+    commission: float = Field(default=0.0, description="Comisión del broker")
+    swap: float = Field(default=0.0, description="Swap cargado")
+    profit_loss: float = Field(..., description="Resultado neto o bruto del trade")
+    slippage: Optional[float] = Field(default=None, description="Slippage experimentado")
+
+class CalculatedMetrics(BaseModel):
+    total_trades: int = Field(..., description="Número total de trades analizados")
+    profit_factor: float = Field(..., description="Factor de beneficio neto recalculado")
+    expectancy: float = Field(..., description="Esperanza matemática de beneficio por trade")
+    average_win: float = Field(..., description="Ganancia promedio")
+    average_loss: float = Field(..., description="Pérdida promedio")
+    win_rate: float = Field(..., description="Porcentaje de operaciones ganadoras")
+    max_winning_streak: int = Field(..., description="Racha máxima de ganancias consecutivas")
+    max_losing_streak: int = Field(..., description="Racha máxima de pérdidas consecutivas")
+    max_daily_loss: float = Field(..., description="Pérdida máxima acumulada en un único día natural")
+    max_daily_loss_pct: float = Field(..., description="Pérdida diaria máxima relativa al balance inicial")
+    max_simultaneous_trades: int = Field(..., description="Exposición simultánea máxima de trades")
+    sortino_ratio: float = Field(..., description="Sortino Ratio aproximado trade-based")
+    cost_per_trade: float = Field(..., description="Cargos medios (comisión + swap) por trade")
+
 class BacktestReport(BaseModel):
     strategy_id: str
     version: str
@@ -67,6 +100,7 @@ class BacktestReport(BaseModel):
     average_slippage: float
     average_trade_cost: float
     raw_metrics: Optional[Dict[str, Any]] = None
+    calculated_metrics: Optional[CalculatedMetrics] = None
 
 class BiasChecklist(BaseModel):
     look_ahead_bias_checked: bool
