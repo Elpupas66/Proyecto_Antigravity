@@ -1,16 +1,16 @@
+# Estado del Proyecto Antigravity
+
 ## Uso de Google Antigravity
 
 Este proyecto se está desarrollando con ayuda de Google Antigravity como entorno de asistencia, planificación, implementación controlada y validación técnica. Las decisiones arquitectónicas, la división por fases, la preparación del repositorio y las validaciones técnicas se han realizado dentro de este flujo de trabajo asistido.
-
-# Estado del Proyecto Antigravity
 
 ## 📊 Resumen Ejecutivo
 
 | Métrica | Valor |
 |---------|-------|
-| **Versión Core** | 1.1.0 |
-| **Fase Actual** | 2.1 (RiskEngine Determinista) |
-| **Tests** | 7/7 ✅ |
+| **Versión Core** | 1.3.0 |
+| **Fase Actual** | 4.2A (Metrics Engine Determinista) |
+| **Tests Globales** | 54/54 ✅ |
 | **Estado** | En desarrollo activo |
 
 ---
@@ -21,47 +21,48 @@ Este proyecto se está desarrollando con ayuda de Google Antigravity como entorn
 - [x] Estructura del repositorio
 - [x] Documentación inicial
 - [x] Configuración de entorno
+- [x] GitHub y control de versiones
 
-### Fase 2.1: RiskEngine Determinista (COMPLETADA)
+### Fase 2: Riesgo y Framework
 - [x] Implementación de FastAPI Core
-- [x] Motor de evaluación de riesgo (RiskEngine)
 - [x] Base de datos SQLite
-- [x] Settings con validación de seguridad
-- [x] Tests unitarios (7/7 pasando)
+- [x] Settings & Safety Locks
+- [x] Motor de evaluación de riesgo (RiskEngine determinista)
+- [x] Strategy Models Pydantic
+- [x] Strategy Validation Framework
 
----
+### Fase 3: Validación Académica
+- [x] BacktestValidator
+- [x] Metrics Standard
 
-## 📝 Commits Relevantes
+### Fase 4.1: Backtest Import Layer
+- [x] MT5 HTML Backtest Import Layer
+- [x] MT5HtmlParser para informes HTML en inglés
+- [x] SHA-256 Traceability
 
-| Commit | Hash | Descripción |
-|--------|------|-------------|
-| Latest | `66eb410` | Validate T2.1 deterministic RiskEngine |
-| Anterior | `a52556e` | Backup: Estado base legacy antes de la nueva arquitectura Core |
+### Fase 4.2A: Metrics Engine (Determinista)
+- [x] Cálculo matemático offline aislado
+- [x] Expectancy recalculada
+- [x] Rachas, Max Daily Loss, Max Simultaneous Trades
+- [x] Sortino Ratio (trade-based)
+- [x] Enriquecimiento determinista de BacktestReport
 
 ---
 
 ## 🧪 Módulos Validados
 
-### Core (Fase 2.1)
 | Módulo | Tests | Estado |
 |--------|-------|--------|
-| RiskEngine.evaluate() | 7 | ✅ VALIDADO |
-| FastAPI /health | - | ✅ FUNCIONAL |
-| SQLite Database | - | ✅ FUNCIONAL |
-| Settings Security | - | ✅ FUNCIONAL |
+| **RiskEngine** | 7/7 | ✅ VALIDADO |
+| **Strategy Models** | 8/8 | ✅ VALIDADO |
+| **BacktestValidator** | 10/10 | ✅ VALIDADO |
+| **MT5HtmlParser** | 29/29 | ✅ VALIDADO |
+| **Metrics Engine** | 7/7 | ✅ VALIDADO |
+| **FastAPI /health** | - | ✅ FUNCIONAL |
+| **SQLite Database** | - | ✅ FUNCIONAL |
+| **Settings Security** | - | ✅ FUNCIONAL |
 
-### Tests Detallados
-```
-✅ T1 | Trade válido (demo, aprobado por usuario) → APPROVED
-✅ T2 | Trade sin UUID → REJECTED (R5)
-✅ T3 | Pérdida diaria excedida (3% > 2%) → REJECTED (R3)
-✅ T4 | Máximo de trades concurrentes alcanzado (3/3) → REJECTED (R4)
-✅ T5 | Ejecución real con ALLOW_REAL_EXECUTION=False → REJECTED (R1)
-✅ T6 | Campos mínimos ausentes (symbol, entry_price) → REJECTED (R6)
-✅ T7 | Sin aprobación de usuario (REQUIRE_APPROVAL=True) → REJECTED (R2)
-
-RESULTADO FINAL: 7/7 tests pasados | 0 fallados
-```
+**Resultado consolidado actual:** 54 tests pasados | 0 fallados (pytest).
 
 ---
 
@@ -88,22 +89,20 @@ REQUIRE_APPROVAL=True
 
 ## ❌ Qué NO Hace El Sistema Todavía
 
-### Funcionalidades Pendientes
-- ❌ **Kill Switch (T2.2)**: Botón de parada de emergencia
+### Funcionalidades Pendientes (Roadmap)
+- ❌ **Monte Carlo & Risk of Ruin** (Fase 4.2B)
+- ❌ **Metrics Engine avanzado**
+- ❌ **Kill Switch**: Botón de parada de emergencia
 - ❌ **Approval Layer**: Sistema de aprobación via Telegram
 - ❌ **AI Validator**: Validación con agentes IA
-- ❌ **Gatekeeper**: Orquestación completa
-- ❌ **MT5 Integration**: Conexión con MetaTrader 5
-- ❌ **Paper Trading**: Simulación completa de trading
-- ❌ **Webhook /signal**: Receptor de señales de TradingView
-- ❌ **n8n Integration**: Orquestación con n8n
+- ❌ **Gatekeeper MT5**: Orquestación y acoplamiento con MT5
+- ❌ **Paper Trading Sandbox**: Simulación de trading
+- ❌ **TradingView Integration**: Receptor de webhooks
+- ❌ **n8n auxiliary workflows**: Orquestación con n8n
+- ❌ **Demo execution**: Ejecución real en cuenta demo
 
-### Lo que NO es (Aún)
-- ❌ No es unrobot de trading operativo
-- ❌ No conecta con cuentas reales
-- ❌ No ejecuta operaciones en mercados reales
-- ❌ No tiene interfaz de usuario completa
-- ❌ No tiene Telegram bot funcional
+### Ejecución Real
+La ejecución real sigue **bloqueada por diseño** (`approved_for_real=False`, `ALLOW_REAL_EXECUTION=False`). Cualquier ejecución operativa futura requiere pasar invariablemente por el RiskEngine y el Approval Layer humano.
 
 ---
 
@@ -111,11 +110,15 @@ REQUIRE_APPROVAL=True
 
 ```
 core/
-├── main.py              # FastAPI app (55 líneas)
-├── risk_engine.py      # Evaluador de riesgo (T2.1)
-├── database.py         # SQLite setup
-├── models.py          # Modelos Pydantic
-└── settings.py        # Configuración segura
+├── main.py              # FastAPI app
+├── risk_engine.py       # Evaluador de riesgo
+├── database.py          # SQLite setup
+├── models.py            # Modelos Pydantic base
+├── strategy_models.py   # Modelos Pydantic de backtests
+├── settings.py          # Configuración segura
+├── backtest_validator.py# Validador lógico de estrategias
+├── parsers/             # Módulo de importación de backtests
+└── metrics/             # Módulo matemático determinista
 ```
 
 ---
@@ -124,7 +127,7 @@ core/
 
 ### 1. Ejecutar Tests
 ```bash
-python tests/test_risk_engine.py
+pytest tests/
 ```
 
 ### 2. Arrancar FastAPI
@@ -136,21 +139,6 @@ python -m uvicorn core.main:app --reload
 ```bash
 curl http://127.0.0.1:8000/health
 ```
-
-### 4. Verificar Git Status
-```bash
-git status
-git log --oneline -5
-```
-
----
-
-## 📅 Última Actualización
-
-- **Fecha**: 2026-05-27
-- **Versión**: 1.1.0
-- **Commit**: 66eb410
-- **Responsable**: Proyecto Académico Antigravity
 
 ---
 

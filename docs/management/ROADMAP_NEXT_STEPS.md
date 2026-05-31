@@ -2,144 +2,113 @@
 
 ## 📋 Resumen del Roadmap
 
-El proyecto Antigravity sigue una hoja de ruta modular. La Fase 2.1 (RiskEngine Determinista) está completada. Las siguientes fases se enfocan en seguridad, validación y ejecución controlada.
+El proyecto Antigravity sigue una hoja de ruta modular estricta. Actualmente se ha completado hasta la **Fase 4.2A (Metrics Engine Determinista)**, integrando ingesta segura de reportes MT5, validación estricta, y cálculo matemático avanzado de métricas deterministas. Las siguientes fases abordarán el análisis estocástico, la validación cualitativa (IA) y la conectividad controlada.
 
 ---
 
 ## 🗺️ Fases del Proyecto
 
 ```
-Fase 1: Fundamentos           ✅ COMPLETADO
-Fase 2.1: RiskEngine         ✅ COMPLETADO
-─────────────────────────────────────────────
-Fase 2.2: Kill Switch        🔜 PRÓXIMO
-Fase 2.3: Approval Layer     📅 PLANIFICADO
-Fase 2.4: AI Validator       📅 PLANIFICADO
-Fase 3.1: Gatekeeper         📅 PLANIFICADO
-Fase 3.2: Paper Trading      📅 PLANIFICADO
-Fase 4: Ejecución Real       🔒 BLOQUEADO
+Fase 1: Fundamentos                 ✅ COMPLETADO
+Fase 2: Riesgo y Framework          ✅ COMPLETADO
+Fase 3: Validación Académica        ✅ COMPLETADO
+Fase 4.1: MT5 Import Layer          ✅ COMPLETADO
+Fase 4.2A: Metrics Engine Base      ✅ COMPLETADO
+────────────────────────────────────────────────────────
+Fase 4.2B: Monte Carlo & Risk Ruin  🔜 PRÓXIMO
+Fase 4.3: AI Validator              📅 PLANIFICADO
+Fase 5.1: Telegram Approval Layer   📅 PLANIFICADO
+Fase 5.2: Kill Switch               📅 PLANIFICADO
+Fase 6.1: Paper Trading Sandbox     📅 PLANIFICADO
+Fase 6.2: Gatekeeper MT5 & n8n      📅 PLANIFICADO
+Fase 6.3: TradingView Integration   📅 PLANIFICADO
+Fase 7: Demo Execution              📅 PLANIFICADO
+Fase 8: Ejecución Real              🔒 BLOQUEADO
 ```
 
 ---
 
-## 🔜 Fase 2.2: Kill Switch
+## 🔜 Fase 4.2B: Monte Carlo & Risk of Ruin
 
 ### Descripción
-Sistema de parada de emergencia que permite detener inmediatamente cualquier operación del sistema.
+Evolución del Metrics Engine para calcular métricas estocásticas avanzadas que requieran simulaciones de remuestreo.
 
 ### Objetivos
-- [ ] Implementar endpoint `/emergency/stop`
-- [ ] Crear flag global `EMERGENCY_STOP`
-- [ ] Integrar con RiskEngine para rechazar todas las operaciones cuando esté activo
-- [ ] Añadir logging de eventos de emergencia
-
-### Criterios de Éxito
-- El Kill Switch debe poder activarse via API
-- Una vez activado, ninguna operación puede ejecutarse
-- Debe persistir el estado hasta que se desactive manualmente
+- [ ] Algoritmo de simulación Monte Carlo sobre la lista de transacciones.
+- [ ] Cálculo probabilístico de Risk of Ruin.
+- [ ] Integración condicional en el BacktestValidator para aplicar umbrales probabilísticos.
 
 ---
 
-## 📅 Fase 2.3: Approval Layer
+## 📅 Fase 4.3: AI Validator
 
 ### Descripción
-Capa de aprobación que requiere confirmación humana antes de ejecutar cualquier operación.
-
-### Objetivos
-- [ ] Implementar sistema de tokens de aprobación
-- [ ] Crear endpoint `/approve/{token}`
-- [ ] Integrar con Telegram para notificaciones (futuro)
-- [ ] Timeout automático si no hay aprobación en X minutos
-
-### Criterios de Éxito
-- Todo trade debe ser aprobado explícitamente
-- El sistema rechaza operaciones no aprobadas
-- Registro completo de approvals/rejections
-
----
-
-## 📅 Fase 2.4: AI Validator
-
-### Descripción
-Módulo de validación que usa agentes IA para analizar y validar operaciones antes de su ejecución.
+Módulo de validación cualitativa que utiliza agentes IA para analizar contextos operativos antes de aprobar estrategias o transacciones.
 
 ### Objetivos
 - [ ] Integrar con LLM local (Ollama)
-- [ ] Crear prompt de validación de trades
+- [ ] Crear prompt de validación de trades y sesgos
 - [ ] Implementar endpoint `/ai/validate`
 - [ ] Logging de análisis IA
 
-### Criterios de Éxito
-- El sistema puede analizar un trade con IA
-- Devuelve rationale de aprobación/rechazo
-- No bloquea la ejecución (es informativo)
+---
+
+## 📅 Fases de Seguridad y Control Operativo (Fase 5)
+
+### Fase 5.1: Telegram Approval Layer
+Capa de aprobación que requiere confirmación humana asíncrona antes de transitar a estados de ejecución simulada. Notificaciones integradas y sistema de tokens OTP o callbacks. Todo trade debe ser aprobado explícitamente.
+
+### Fase 5.2: Kill Switch
+Sistema de parada de emergencia integral (`/emergency/stop`) para bloquear instantáneamente todas las operaciones y congelar el Gatekeeper. Debe persistir el estado hasta desactivarse manualmente.
 
 ---
 
-## 📅 Fase 3.1: Gatekeeper
+## 📅 Fases de Conectividad y Simulación (Fase 6)
+
+### Fase 6.1: Paper Trading Sandbox
+Entorno virtual de simulación total de mercado que consume señales validadas sin conectar al broker. Simula operaciones, calcula balance/equity virtual y genera reportes de rendimiento.
+
+### Fase 6.2: Gatekeeper MT5 & n8n
+Orquestador central. Módulo de puente seguro (`Gatekeeper`) y orquestación externa con `n8n` para enrutar intentos de operación a instancias controladas de MT5 (Demo). Maneja buffer de señales y retry logic.
+
+### Fase 6.3: TradingView Integration
+Receptor de webhooks de señales de TradingView. Autenticación con tokens y transformación de alertas genéricas a eventos operativos validados en el pipeline.
+
+---
+
+## 📅 Fase 7: Demo Execution
 
 ### Descripción
-Orquestador central que gestiona el flujo completo de señales desde TradingView hasta MT5.
-
-### Objetivos
-- [ ] Receptor de webhooks de TradingView
-- [ ] Integración con n8n para orquestación
-- [ ] Buffer de señales
-- [ ] Retry logic
-
-### Criterios de Éxito
-- Recibe señales de TradingView
-- Las enruta a través del pipeline completo
-- Maneja errores gracefully
+Conexión exclusiva con instancias de broker en entorno de simulación (Demo account de MT5). Esta será la máxima expresión operativa permitida.
 
 ---
 
-## 📅 Fase 3.2: Paper Trading
+## 🔒 Fase 8: Ejecución Real
 
-### Descripción
-Simulación completa de trading sin usar dinero real.
-
-### Objetivos
-- [ ] Motor de simulación de cuentas
-- [ ] Cálculo de P&L virtual
-- [ ] Tracking de estadísticas
-- [ ] Reporting semanal
-
-### Criterios de Éxito
-- Simula operaciones correctamente
-- Calcula balance/equity virtual
-- Genera reportes de rendimiento
-
----
-
-## 🔒 Fase 4: Ejecución Real
-
-### ⚠️ IMPORTANTE: Esta fase está BLOQUEADA
+### ⚠️ IMPORTANTE: Esta fase está BLOQUEADA PERMANENTEMENTE
 
 La ejecución con dinero real **NUNCA** será parte de este proyecto académico por razones de seguridad y cumplimiento.
 
 ### Razones del Bloqueo
-1. **Riesgo financiero**: Operaciones reales requieren licencias y regulación
-2. **Seguridad**: El proyecto es académico y educativo
-3. **Responsabilidad**: No nos hacemos responsables de pérdidas financieras
+1. **Riesgo financiero**: Operaciones reales requieren licencias y regulación.
+2. **Seguridad**: El proyecto es académico y educativo.
+3. **Responsabilidad**: No nos hacemos responsables de pérdidas financieras.
 
-### Alternativas
-- Usar cuenta demo de MT5 exclusivamente
-- Paper trading para simulaciones
-- Learning lab para desarrollo de estrategias
+Cualquier ejecución operativa futura requiere obligatoriamente pasar por el `RiskEngine` y la variable global `ALLOW_REAL_EXECUTION` siempre estará en `False` por diseño contractual (`approved_for_real=False`).
 
 ---
 
-## 🎯 Prioridades de Desarrollo
+## 🎯 Prioridades de Desarrollo Actuales
 
 | Prioridad | Fase | Descripción |
 |-----------|------|-------------|
-| **ALTA** | 2.2 | Kill Switch - Seguridad de emergencia |
-| **ALTA** | 2.3 | Approval Layer - Control humano |
-| **MEDIA** | 2.4 | AI Validator - Asistencia IA |
-| **MEDIA** | 3.1 | Gatekeeper - Orquestación |
-| **MEDIA** | 3.2 | Paper Trading - Simulación |
-| **BAJA** | 4 | Ejecución Real - ❌ BLOQUEADO |
+| **ALTA** | 4.2B | Monte Carlo & Risk of Ruin - Cierre analítico cuantitativo |
+| **ALTA** | 4.3 | AI Validator - Verificación heurística con LLM |
+| **MEDIA** | 5.1 | Telegram Approval Layer - Human-in-the-loop |
+| **MEDIA** | 5.2 | Kill Switch - Sistema de bloqueo de emergencia |
+| **MEDIA** | 6 | Conectividad y Simulación |
+| **BAJA** | 7 | Demo Execution |
+| **NULA** | 8 | Ejecución Real - ❌ BLOQUEADO |
 
 ---
 
@@ -153,23 +122,11 @@ La ejecución con dinero real **NUNCA** será parte de este proyecto académico 
 # Instalar dependencias
 pip install -r requirements.txt
 
-# Ejecutar tests
-python tests/test_risk_engine.py
+# Ejecutar tests globales
+pytest tests/
 
 # Arrancar servidor
 python -m uvicorn core.main:app --reload
-```
-
-### Commits Sugeridos
-```bash
-# Fase 2.2 - Kill Switch
-git commit -m "feat: implement T2.2 Kill Switch emergency endpoint"
-
-# Fase 2.3 - Approval Layer  
-git commit -m "feat: implement T2.3 Approval Layer with tokens"
-
-# Fase 2.4 - AI Validator
-git commit -m "feat: implement T2.4 AI Validator with Ollama"
 ```
 
 ---
@@ -177,8 +134,8 @@ git commit -m "feat: implement T2.4 AI Validator with Ollama"
 ## 📚 Referencias
 
 - Documento de Arquitectura: `docs/architecture/ARCHITECTURE_OVERVIEW.md`
+- Contexto IA: `docs/ai_context/ANTIGRAVITY_SPACE_CONTEXT.md`
 - Estado del Proyecto: `docs/management/PROJECT_STATUS.md`
-- Reglas de Riesgo: `core/risk_engine.py`
 
 ---
 
