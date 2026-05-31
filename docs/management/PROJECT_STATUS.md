@@ -104,6 +104,9 @@ REQUIRE_APPROVAL=True
 ### Ejecución Real
 La ejecución real sigue **bloqueada por diseño** (`approved_for_real=False`, `ALLOW_REAL_EXECUTION=False`). Cualquier ejecución operativa futura requiere pasar invariablemente por el RiskEngine y el Approval Layer humano.
 
+### Pipeline Oficial (No saltable)
+`Parser → Metrics Engine → BacktestValidator → RiskEngine → Approval Layer`
+
 ---
 
 ## 📦 Archivos del Núcleo

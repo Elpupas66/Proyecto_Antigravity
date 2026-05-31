@@ -94,7 +94,10 @@ La ejecución con dinero real **NUNCA** será parte de este proyecto académico 
 2. **Seguridad**: El proyecto es académico y educativo.
 3. **Responsabilidad**: No nos hacemos responsables de pérdidas financieras.
 
-Cualquier ejecución operativa futura requiere obligatoriamente pasar por el `RiskEngine` y la variable global `ALLOW_REAL_EXECUTION` siempre estará en `False` por diseño contractual (`approved_for_real=False`).
+### Pipeline Oficial (No saltable)
+`Parser → Metrics Engine → BacktestValidator → RiskEngine → Approval Layer`
+
+Cualquier ejecución operativa futura requiere obligatoriamente completar este pipeline, y la variable global `ALLOW_REAL_EXECUTION` siempre estará en `False` por diseño contractual (`approved_for_real=False`).
 
 ---
 

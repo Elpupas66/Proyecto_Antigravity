@@ -55,7 +55,7 @@ El proyecto tiene un doble propósito:
 
 2. **RiskEngine** (`core/risk_engine.py`)
    - Motor de evaluación de riesgo determinista
-   - 7 reglas de seguridad implementadas (R1-R7)
+   - 6 reglas de seguridad implementadas (R1-R6)
    - Evaluación sin red, sin MT5, sin IA externa
 
 3. **Base de Datos** (`core/database.py`)
@@ -145,7 +145,7 @@ ENVIRONMENT = development     # Modo desarrollo
 | R4 | MAX_TRADES_EXCEEDED | Limita trades concurrentes (máx 3) |
 | R5 | MISSING_UUID | Requiere identificador único |
 | R6 | MISSING_FIELDS | Requiere campos mínimos (symbol, entry_price) |
-| R7 | (reservada) | Para futuras expansiones |
+| R7 | *(reservada)* | *Regla futura, no activa ni validada actualmente* |
 
 ---
 
