@@ -76,6 +76,36 @@ class CalculatedMetrics(BaseModel):
     sortino_ratio: float = Field(..., description="Sortino Ratio aproximado trade-based")
     cost_per_trade: float = Field(..., description="Cargos medios (comisión + swap) por trade")
 
+class MonteCarloResult(BaseModel):
+    risk_of_ruin_pct: float = Field(..., description="Fracción de simulaciones que alcanzaron la ruina")
+    worst_case_drawdown: float = Field(..., description="Drawdown máximo absoluto observado")
+    worst_case_drawdown_pct: float = Field(..., description="Drawdown máximo en porcentaje sobre equity inicial")
+    monte_carlo_max_drawdown_p50: float = Field(..., description="Mediana del drawdown máximo")
+    monte_carlo_max_drawdown_p95: float = Field(..., description="Percentil 95 del drawdown máximo")
+    monte_carlo_max_drawdown_p99: float = Field(..., description="Percentil 99 del drawdown máximo")
+    median_final_equity: float = Field(..., description="Mediana del equity final")
+    p05_final_equity: float = Field(..., description="Percentil 5 del equity final")
+    p95_final_equity: float = Field(..., description="Percentil 95 del equity final")
+    mean_final_equity: float = Field(..., description="Media del equity final")
+    max_losing_streak_p95: int = Field(..., description="Percentil 95 de la racha máxima de pérdidas")
+    max_losing_streak_p99: int = Field(..., description="Percentil 99 de la racha máxima de pérdidas")
+    n_simulations: int = Field(..., description="Número de simulaciones ejecutadas")
+    method: str = Field(..., description="Método de remuestreo (bootstrap/shuffle)")
+    seed: Optional[int] = Field(default=None, description="Semilla utilizada")
+    n_trades_input: int = Field(..., description="Número de trades de entrada")
+    low_confidence: bool = Field(..., description="Flag de baja confianza (< 30 trades)")
+    initial_equity: float = Field(..., description="Equity inicial de simulación")
+    ruin_threshold_pct: float = Field(..., description="Umbral de ruina configurado")
+    computed_at: datetime = Field(..., description="Timestamp UTC del cálculo")
+    approved_for_real: bool = Field(default=False, description="Flag de seguridad inmutable")
+
+    @field_validator("approved_for_real")
+    @classmethod
+    def force_false_always(cls, v: bool) -> bool:
+        if v:
+            raise ValueError("PROHIBIDA LA EJECUCIÓN REAL EN MERCADOS FINANCIEROS (CONTRATO DE SEGURIDAD FASE 4.2B)")
+        return False
+
 class BacktestReport(BaseModel):
     strategy_id: str
     version: str
@@ -101,6 +131,7 @@ class BacktestReport(BaseModel):
     average_trade_cost: float
     raw_metrics: Optional[Dict[str, Any]] = None
     calculated_metrics: Optional[CalculatedMetrics] = None
+    monte_carlo_result: Optional[MonteCarloResult] = None
 
 class BiasChecklist(BaseModel):
     look_ahead_bias_checked: bool

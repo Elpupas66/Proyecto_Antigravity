@@ -172,9 +172,15 @@ class BacktestValidator:
             decision_reasons.append(f"OBSERVACION: Riesgo de ruina elevado ({report.risk_of_ruin_pct:.2f}% > {thresholds.max_risk_of_ruin_pct:.2f}%).")
 
         # ─── RESOLUCIÓN DE CLASIFICACIÓN ───
+        # D4: low_confidence de Monte Carlo bloquea PAPER_TRADING_READY y degrada a OBSERVATION
+        is_low_confidence = False
+        if report.monte_carlo_result and report.monte_carlo_result.low_confidence:
+            is_low_confidence = True
+            decision_reasons.append("OBSERVACION: Baja confianza en la simulacion Monte Carlo (< 30 trades).")
+
         if is_rejected:
             classification = StrategyClassification.REJECTED
-        elif is_observation:
+        elif is_observation or is_low_confidence:
             classification = StrategyClassification.OBSERVATION
         else:
             classification = StrategyClassification.PAPER_TRADING_READY
